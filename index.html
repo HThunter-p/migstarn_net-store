@@ -368,7 +368,7 @@
       document.getElementById("checkoutBtn").disabled = units === 0;
       const cartItems = document.getElementById("cartItems");
       if (!units) {
-        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add some networking gear to get started.</div>';
+        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add some networking or electronic gear to get started.</div>';
         return;
       }
       cartItems.innerHTML = [...cart.entries()].map(([id, qty]) => {
@@ -420,7 +420,7 @@
       });
       let total = 0;
       cart.forEach((qty,id) => total += products.find(p => p.id === id).price * qty);
-      const message = `Hello MIGSTAR N-NET, I would like to order the following hotspot/networking equipment:\n\n${lines.join("\n")}\n\nEstimated subtotal: ${money(total)}\n\nPlease confirm current availability, final prices, delivery/pickup options, and payment instructions.\n\nMy name:`;
+      const message = `Hello MIGSTAR N-NET, I would like to order the following hotspot/networking/electronic equipment:\n\n${lines.join("\n")}\n\nEstimated subtotal: ${money(total)}\n\nPlease confirm current availability, final prices, delivery/pickup options, and payment instructions.\n\nMy name:`;
       sendWhatsApp(message);
     }
 
@@ -448,7 +448,7 @@
     });
     document.getElementById("checkoutBtn").addEventListener("click", checkout);
     document.getElementById("askWhatsApp").addEventListener("click", () =>
-      sendWhatsApp("Hello MIGSTAR N-NET, I need advice on choosing hardware for a Wi-Fi hotspot. Please help me select suitable equipment.")
+      sendWhatsApp("Hello MIGSTAR N-NET, I need advice on choosing hardware for my project. Please help me select suitable equipment.")
     );
     document.getElementById("consultWhatsApp").addEventListener("click", () =>
       sendWhatsApp("Hello MIGSTAR N-NET, I am planning a hotspot installation. Please help me choose equipment.\n\nLocation:\nExpected simultaneous users:\nCoverage area:\nInternet connection available:\nBudget:")
