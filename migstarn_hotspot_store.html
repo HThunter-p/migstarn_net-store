@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>Migstar N-Net | Hotspot & Electronics Hardware</title>
+  <style>
+    :root {
+      --ink: #101827;
+      --muted: #657084;
+      --brand: #0b7a75;
+      --brand-dark: #075e59;
+      --lime: #d7f36b;
+      --paper: #f5f7f8;
+      --white: #ffffff;
+      --line: #e4e9ed;
+      --shadow: 0 16px 45px rgba(16, 24, 39, .08);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .announcement { background: var(--lime); color: #18210a; text-align: center; padding: 9px 16px; font-size: .82rem; font-weight: 750; letter-spacing: .01em; }
+    .site-header { background: var(--ink); color: white; position: sticky; top: 0; z-index: 20; box-shadow: 0 5px 22px rgba(0,0,0,.12); }
+    .nav { max-width: 1200px; margin: auto; padding: 17px 24px; display: flex; align-items: center; gap: 24px; }
+    .logo { display: flex; align-items: center; gap: 11px; min-width: max-content; }
+    .logo-mark { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: var(--lime); color: var(--ink); font-weight: 950; letter-spacing: -.08em; font-size: 1.05rem; }
+    .logo-name { font-weight: 850; letter-spacing: -.035em; line-height: 1.1; }
+    .logo-name small { display: block; color: #aab5c4; font-size: .7rem; font-weight: 600; letter-spacing: .08em; margin-top: 4px; text-transform: uppercase; }
+    .nav-search { flex: 1; position: relative; }
+    .nav-search input { width: 100%; border: 1px solid #364154; background: #1a2535; color: white; border-radius: 13px; padding: 13px 16px 13px 43px; outline: none; }
+    .nav-search input:focus { border-color: var(--lime); }
+    .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aab5c4; }
+    .cart-button { border: 1px solid #364154; background: #1a2535; color: white; border-radius: 13px; padding: 11px 15px; display: flex; gap: 10px; align-items: center; font-weight: 750; white-space: nowrap; }
+    .cart-count { background: var(--lime); color: var(--ink); border-radius: 99px; min-width: 23px; height: 23px; display: grid; place-items: center; font-size: .78rem; }
+    .hero { background: var(--ink); color: white; overflow: hidden; }
+    .hero-inner { max-width: 1200px; margin: auto; padding: 56px 24px 72px; display: grid; grid-template-columns: 1.12fr .88fr; gap: 38px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #394558; border-radius: 99px; padding: 7px 12px; color: var(--lime); text-transform: uppercase; letter-spacing: .1em; font-size: .72rem; font-weight: 800; }
+    .eyebrow span { width: 7px; height: 7px; background: var(--lime); border-radius: 50%; }
+    h1 { font-size: clamp(2.5rem, 5.5vw, 4.8rem); letter-spacing: -.065em; line-height: .99; margin: 22px 0 20px; max-width: 680px; }
+    h1 em { color: var(--lime); font-style: normal; }
+    .hero-copy { color: #b8c2d0; font-size: 1.08rem; line-height: 1.7; max-width: 540px; margin: 0 0 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { border: 0; border-radius: 13px; padding: 13px 18px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; font-weight: 800; transition: transform .18s, background .18s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--lime); color: var(--ink); }
+    .btn-primary:hover { background: #e5ff88; }
+    .btn-ghost { background: transparent; color: white; border: 1px solid #465367; }
+    .hero-visual { min-height: 310px; border: 1px solid #354155; border-radius: 28px; padding: 22px; position: relative; background: radial-gradient(circle at 70% 25%, #254d4c 0, #1b2c3a 35%, #152031 75%); }
+    .visual-label { color: #aebaca; font-size: .76rem; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+    .device-stack { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 205px; }
+    .device { box-shadow: 0 22px 34px rgba(0,0,0,.25); position: relative; }
+    .device.router { width: 150px; height: 90px; background: linear-gradient(145deg, #f9fafb, #aeb8c2); border-radius: 14px; transform: rotate(-8deg); }
+    .device.router:before { content: ""; position: absolute; width: 4px; height: 70px; background: #d9e0e6; left: 23px; top: -57px; border-radius: 8px; transform: rotate(-7deg); box-shadow: 96px -4px 0 #d9e0e6; }
+    .device.router:after { content: "MikroTik"; position: absolute; bottom: 15px; left: 20px; color: #374151; font-size: 11px; font-weight: 900; letter-spacing: .05em; }
+    .device.ap { width: 92px; height: 92px; border-radius: 50%; background: linear-gradient(145deg, #fff, #c6d1da); border: 8px solid #dce3e9; display: grid; place-items: center; }
+    .device.ap:after { content: ""; width: 35px; height: 35px; border: 2px solid #8c9aa8; border-radius: 50%; box-shadow: 0 0 0 7px rgba(140,154,168,.16); }
+    .visual-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #344155; padding-top: 16px; color: #b8c2d0; font-size: .83rem; }
+    .visual-footer strong { color: var(--lime); }
+    .trust-strip { max-width: 1200px; margin: -22px auto 0; padding: 0 24px; position: relative; z-index: 2; }
+    .trust-grid { background: white; box-shadow: var(--shadow); border-radius: 17px; padding: 19px 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .trust-item { display: flex; align-items: center; justify-content: center; gap: 11px; color: #4b5668; font-size: .88rem; font-weight: 700; }
+    .trust-icon { width: 35px; height: 35px; background: #e9f7f4; color: var(--brand); border-radius: 11px; display: grid; place-items: center; font-weight: 900; }
+    main { max-width: 1200px; margin: auto; padding: 58px 24px 75px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0 0 7px; font-size: clamp(1.7rem, 3vw, 2.35rem); letter-spacing: -.045em; }
+    .section-heading p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .result-count { color: var(--muted); font-size: .88rem; white-space: nowrap; }
+    .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 25px; }
+    .filter-btn { border: 1px solid var(--line); color: #536074; background: white; padding: 10px 15px; border-radius: 99px; font-weight: 750; font-size: .86rem; }
+    .filter-btn.active { background: var(--ink); border-color: var(--ink); color: white; }
+    .sort-select { margin-left: auto; padding: 10px 13px; border: 1px solid var(--line); border-radius: 11px; background: white; color: var(--ink); outline: none; }
+    .product-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+    .product-card { background: white; border: 1px solid #e9edf0; border-radius: var(--radius); overflow: hidden; transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; min-width: 0; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .product-image { height: 175px; position: relative; background: linear-gradient(145deg, #eef3f5, #e1e8ec); display: grid; place-items: center; overflow: hidden; }
+    .product-image img { width: 100%; height: 100%; padding: 20px; object-fit: contain; transition: transform .25s ease; }
+    .product-card:hover .product-image img { transform: scale(1.06); }
+    .tag { position: absolute; top: 13px; left: 13px; background: white; color: #405064; border-radius: 99px; padding: 6px 9px; font-size: .68rem; font-weight: 850; letter-spacing: .03em; }
+    .product-info { padding: 17px; display: flex; flex-direction: column; flex: 1; }
+    .category-label { color: var(--brand); text-transform: uppercase; font-size: .68rem; letter-spacing: .1em; font-weight: 850; margin-bottom: 8px; }
+    .product-info h3 { margin: 0 0 8px; font-size: 1rem; line-height: 1.35; letter-spacing: -.02em; }
+    .product-desc { color: var(--muted); font-size: .83rem; line-height: 1.5; margin: 0 0 17px; flex: 1; }
+    .product-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; }
+    .price { font-size: 1.08rem; font-weight: 900; letter-spacing: -.03em; }
+    .add-btn { border: 0; border-radius: 11px; padding: 10px 12px; background: var(--brand); color: white; font-weight: 800; font-size: .83rem; }
+    .add-btn:hover { background: var(--brand-dark); }
+    .empty-state { background: white; border: 1px dashed #ccd5dc; border-radius: var(--radius); text-align: center; padding: 50px 20px; color: var(--muted); grid-column: 1/-1; }
+    .how-section { margin-top: 72px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 36px; align-items: start; }
+    .how-intro { background: var(--ink); color: white; border-radius: 24px; padding: 28px; }
+    .how-intro h2 { font-size: 2rem; line-height: 1.05; letter-spacing: -.05em; margin: 14px 0; }
+    .how-intro p { color: #b9c4d1; line-height: 1.7; margin-bottom: 0; }
+    .steps { display: grid; gap: 18px; }
+    .step { display: flex; gap: 15px; padding: 4px 0; }
+    .step-num { width: 40px; height: 40px; border-radius: 13px; background: #e1f3ee; color: var(--brand); display: grid; place-items: center; flex: 0 0 auto; font-weight: 900; }
+    .step h3 { margin: 2px 0 5px; font-size: 1rem; }
+    .step p { margin: 0; color: var(--muted); line-height: 1.55; font-size: .9rem; }
+    .contact-banner { margin-top: 65px; background: #e4f2ed; border-radius: 24px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .contact-banner h2 { margin: 0 0 7px; letter-spacing: -.04em; font-size: 1.6rem; }
+    .contact-banner p { margin: 0; color: #50665f; line-height: 1.55; }
+    .whatsapp-btn { background: #167c52; color: white; border: 0; border-radius: 13px; padding: 14px 18px; font-weight: 850; white-space: nowrap; }
+    .whatsapp-btn:hover { background: #106541; }
+    footer { background: var(--ink); color: white; }
+    .footer-inner { max-width: 1200px; margin: auto; padding: 28px 24px; display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+    .footer-inner p { margin: 5px 0 0; color: #aab5c4; font-size: .83rem; }
+    .footer-note { color: #aab5c4; font-size: .8rem; text-align: right; }
+    .cart-overlay { position: fixed; inset: 0; background: rgba(9,16,27,.55); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .cart-overlay.open { opacity: 1; pointer-events: auto; }
+    .cart-drawer { position: fixed; z-index: 41; right: 0; top: 0; height: 100dvh; width: min(450px, 100%); background: white; transform: translateX(105%); transition: transform .25s ease; display: flex; flex-direction: column; box-shadow: -20px 0 55px rgba(0,0,0,.16); }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-header { padding: 23px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+    .cart-header h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.04em; }
+    .close-cart { border: 0; background: #f0f3f5; border-radius: 10px; width: 38px; height: 38px; font-size: 1.25rem; }
+    .cart-items { flex: 1; overflow: auto; padding: 18px 23px; }
+    .cart-empty { color: var(--muted); text-align: center; padding: 45px 10px; line-height: 1.6; }
+    .cart-line { display: grid; grid-template-columns: 53px 1fr auto; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: center; }
+    .cart-product-image { width: 53px; height: 53px; object-fit: contain; padding: 4px; background: #eef3f5; border-radius: 13px; }
+    .cart-line h4 { margin: 0 0 5px; font-size: .88rem; line-height: 1.35; }
+    .cart-line .line-price { color: var(--muted); font-size: .82rem; }
+    .qty { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .qty button { border: 1px solid var(--line); background: white; width: 25px; height: 25px; border-radius: 7px; font-weight: 800; }
+    .remove-item { background: transparent; border: 0; color: #a03a3a; font-size: .75rem; padding: 5px 0; }
+    .cart-footer { padding: 20px 23px 24px; border-top: 1px solid var(--line); background: #fbfcfc; }
+    .cart-total { display: flex; justify-content: space-between; font-weight: 900; font-size: 1.12rem; margin-bottom: 7px; }
+    .cart-disclaimer { color: var(--muted); font-size: .78rem; line-height: 1.5; margin: 0 0 15px; }
+    .checkout-btn { width: 100%; background: #167c52; color: white; border: 0; border-radius: 13px; padding: 15px; font-weight: 900; }
+    .checkout-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); background: var(--ink); color: white; padding: 12px 17px; border-radius: 12px; z-index: 60; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: all .2s; font-size: .9rem; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 980px) {
+      .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .hero-inner { grid-template-columns: 1fr .8fr; }
+      .device.router { width: 120px; }
+      .how-section { grid-template-columns: 1fr 1.2fr; }
+    }
+    @media (max-width: 720px) {
+      .nav { gap: 12px; padding: 13px 16px; flex-wrap: wrap; }
+      .logo { flex: 1; }
+      .nav-search { order: 3; flex-basis: 100%; }
+      .cart-button { padding: 10px 12px; }
+      .hero-inner { grid-template-columns: 1fr; padding: 42px 18px 55px; }
+      .hero-visual { min-height: 260px; }
+      .trust-strip { padding: 0 16px; }
+      .trust-grid { grid-template-columns: 1fr; gap: 13px; padding: 18px; }
+      .trust-item { justify-content: flex-start; }
+      main { padding: 45px 16px 55px; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .result-count { display: none; }
+      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .product-image { height: 135px; }
+      .product-image img { padding: 12px; }
+      .product-info { padding: 13px; }
+      .product-info h3 { font-size: .93rem; }
+      .product-desc { font-size: .78rem; }
+      .product-bottom { align-items: flex-start; flex-direction: column; }
+      .add-btn { width: 100%; }
+      .sort-select { margin-left: 0; }
+      .how-section { grid-template-columns: 1fr; margin-top: 55px; }
+      .contact-banner { flex-direction: column; align-items: flex-start; padding: 24px; margin-top: 50px; }
+      .whatsapp-btn { width: 100%; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-note { text-align: left; }
+    }
+    @media (max-width: 370px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .product-image { height: 170px; }
+      .product-bottom { flex-direction: row; align-items: center; }
+      .add-btn { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">NETWORKING & ELECTRONICS GEAR FOR YOU · ORDER DIRECTLY ON WHATSAPP</div>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="logo" href="#" aria-label="Migstar N-Net home">
+        <span class="logo-mark">MN</span>
+        <span class="logo-name">MIGSTAR N-NET<small>Hotspot & Electronics Hardware Store</small></span>
+      </a>
+      <label class="nav-search">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search routers, cables, access points..." aria-label="Search products">
+      </label>
+      <button class="cart-button" id="openCart" aria-label="Open shopping cart"><svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> <span>Cart</span><span class="cart-count" id="cartCount">0</span></button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow"><span></span> Build your project</span>
+        <h1>Everything your <em>hotspot and electronics</em> needs.</h1>
+        <p class="hero-copy">Shop routers, access points, cabling and essential networking gear for your Wi-Fi business. Arduino UNO starter kit included. Add what you need to your cart and send your order to us on WhatsApp.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#shop">Explore products <span>↘</span></a>
+          <button class="btn btn-ghost" id="askWhatsApp">Ask for a recommendation ↗</button>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Illustration of networking equipment">
+        <div class="visual-label">Build. Connect. Grow.</div>
+        <div class="device-stack"><div class="device router"></div><div class="device ap"></div></div>
+        <div class="visual-footer"><span>Hotspot & Electronics essentials</span><strong>One order. Direct WhatsApp.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="trust-grid">
+      <div class="trust-item"><span class="trust-icon">✓</span> Hardware for small and growing projects</div>
+      <div class="trust-item"><span class="trust-icon">↗</span> Convenient WhatsApp ordering</div>
+      <div class="trust-item"><span class="trust-icon">⌂</span> Ask us to help match compatible gear</div>
+      <div class="trust-item"><span class="trust-icon">⌂</span> Wi-Fi billing system also available</div>
+    </div>
+  </div>
+
+  <main id="shop">
+    <div class="section-heading">
+      <div><h2>Shop networking & electronics essentials</h2><p>Choose your equipment and build your order.</p></div>
+      <span class="result-count" id="resultCount">Showing products</span>
+    </div>
+    <div class="toolbar" id="filters" aria-label="Filter products">
+      <button class="filter-btn active" data-category="all">All products</button>
+      <button class="filter-btn" data-category="routers">Routers</button>
+      <button class="filter-btn" data-category="access-points">Access points</button>
+      <button class="filter-btn" data-category="cabling">Cables & tools</button>
+      <button class="filter-btn" data-category="power">Power & protection</button>
+      <button class="filter-btn" data-category="switches">Switches & PoE</button>
+      <button class="filter-btn" data-category="electronics">Electronics</button>
+      <select id="sortSelect" class="sort-select" aria-label="Sort products">
+        <option value="featured">Sort: Featured</option>
+        <option value="low">Price: Low to high</option>
+        <option value="high">Price: High to low</option>
+        <option value="az">Name: A to Z</option>
+      </select>
+    </div>
+    <div class="product-grid" id="productGrid" aria-live="polite"></div>
+
+    <section class="how-section">
+      <div class="how-intro">
+        <span class="eyebrow"><span></span> Simple ordering</span>
+        <h2>Get the right gear for your project.</h2>
+        <p>Not sure which router, access point or PoE switch or maybe electronics item suits your project? Send us your requirements on WhatsApp and we can discuss the best fit before you order.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="step-num">01</span><div><h3>Choose your products</h3><p>Browse the catalogue, search by product, and add the items you need to your cart.</p></div></div>
+        <div class="step"><span class="step-num">02</span><div><h3>Review your order</h3><p>Adjust quantities and check the item list and estimated subtotal.</p></div></div>
+        <div class="step"><span class="step-num">03</span><div><h3>Send it on WhatsApp</h3><p>Your order message opens in WhatsApp, ready for you to send. We can then confirm availability, final pricing, delivery and payment.</p></div></div>
+      </div>
+    </section>
+
+    <section class="contact-banner">
+      <div><h2>Planning a hotspot installation or electronics project?</h2><p>Tell us your location, expected number of users and coverage area for help choosing equipment.</p></div>
+      <button class="whatsapp-btn" id="consultWhatsApp">Chat with us on WhatsApp ↗</button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="logo"><span class="logo-mark">MN</span><span class="logo-name">MIGSTAR N-NET<small>Hotspot & Electronics Hardware Store</small></span></div>
+      <div class="footer-note">Product prices shown are examples for layout preview.<br>Confirm availability and final pricing by WhatsApp.</div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart" aria-modal="true" role="dialog">
+    <div class="cart-header"><h2>Your order <span id="cartTitleCount">(0)</span></h2><button class="close-cart" id="closeCart" aria-label="Close cart">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Estimated subtotal</span><span id="cartTotal">KSh 0</span></div>
+      <p class="cart-disclaimer">Final prices, stock, delivery and payment details will be confirmed on WhatsApp.</p>
+      <button class="checkout-btn" id="checkoutBtn" disabled>Send order to WhatsApp ↗</button>
+    </div>
+  </aside>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    // IMPORTANT: Replace this with your WhatsApp number in international format,
+    // digits only. Example for a Kenyan number: 2547XXXXXXXX (do not include +).
+    const WHATSAPP_NUMBER = "254181686001";
+
+    // Edit product names, descriptions and prices here. Prices are illustrative examples.
+    const products = [
+      { id: 1, name: "MikroTik hEX Router", category: "routers", categoryName: "Router", price: 6500, image: "https://cdn.mikrotik.com/web-assets/rb_images/2065_lg.webp", tag: "Hotspot essential", desc: "Compact wired router for managing a small hotspot network." },
+      { id: 2, name: "MikroTik hAP Wi-Fi Router", category: "routers", categoryName: "Router", price: 8500, image: "https://cdn.mikrotik.com/web-assets/rb_images/2203_ts.webp", tag: "Wi-Fi built in", desc: "Router with built-in wireless for smaller installations." },
+      { id: 3, name: "MikroTik RB5009 Router", category: "routers", categoryName: "Router", price: 26000, image: "https://cdn.mikrotik.com/web-assets/rb_images/2065_lg.webp", tag: "Higher capacity", desc: "A more capable router to consider for a growing network." },
+      { id: 4, name: "Indoor Wi-Fi Access Point", category: "access-points", categoryName: "Access point", price: 6500, image: "https://www.thegeekpub.com/wp-content/uploads/2017/03/Best-Wi-Fi-Access-Points-of-2018-0001-Hero.jpg", tag: "Indoor", desc: "Provides wireless coverage in shops, offices and indoor spaces." },
+      { id: 5, name: "Outdoor Wi-Fi Access Point", category: "access-points", categoryName: "Access point", price: 12500, image: "https://www.dataconnecttechnologies.co.ke/wp-content/uploads/2026/08/TPLINK-EAP110-N300-Wireless-Outdoor-Access-Point.png", tag: "Outdoor", desc: "Weather-resistant access point for suitable outdoor deployments." },
+      { id: 6, name: "Point-to-Point Wireless CPE", category: "access-points", categoryName: "Wireless link", price: 9500, image: "https://www.dataconnecttechnologies.co.ke/wp-content/uploads/2025/02/Tp-link-CPE610-5GHz-300Mbps-23dBi-Outdoor-CPE.png", tag: "Building links", desc: "Wireless link equipment for connecting locations where appropriate." },
+      { id: 7, name: "Cat6 Ethernet Cable — 100m", category: "cabling", categoryName: "Cabling", price: 6500, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyKJEqh7z59i5fX1S7-HnQLoM0fSeT9etqCKgY7ARi5oZXfaVu_RmnkzB8&s=10", tag: "Installer pick", desc: "Ethernet cable for suitable router, switch and access point runs." },
+      { id: 8, name: "RJ45 Connector Pack", category: "cabling", categoryName: "Cabling", price: 500, image: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSjUKn63ZrwG1saAnnbxyRn2gdqR8Zk3ewbFWMEzvX97Vt_o3Fc", tag: "Accessory", desc: "Connectors for terminating compatible Ethernet cables." },
+      { id: 9, name: "Crimping Tool & LAN Tester", category: "cabling", categoryName: "Tools", price: 2500, image: "https://www.techyshop.co.ke/wp-content/uploads/2026/04/Crimping-tool-with-LAN-tester-800x800.webp", tag: "Installer tools", desc: "Useful tools for assembling and checking network cables." },
+      { id: 10, name: "8-Port Gigabit Switch", category: "switches", categoryName: "Switch", price: 3500, image: "https://www.wavetech.co.ke/wp-content/uploads/2024/11/a81e369bf8ce535ec43f54284bce6261.webp", tag: "Expand ports", desc: "Connect several wired network devices through one switch." },
+      { id: 11, name: "8-Port PoE Switch", category: "switches", categoryName: "PoE switch", price: 9500, image: "https://www.cctvshopkenya.co.ke/wp-content/uploads/2021/07/Hikvision-8-Port-PoE-Switch-DS-3E0109P-E-MB-768x768.jpg", tag: "Power + data", desc: "Powers compatible access points over Ethernet; check PoE standards." },
+      { id: 12, name: "PoE Injector", category: "switches", categoryName: "PoE accessory", price: 1500, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCGE5_LmmKSA2On-5ox_RJ4YHUDYUdIsiD_79eidaKnW8-j7qeBsqk8Ts&s", tag: "Single device", desc: "Provides PoE to one compatible device when correctly matched." },
+      { id: 13, name: "UPS Power Backup", category: "power", categoryName: "Power", price: 6500, image: "https://www.mastersecurity.co.ke/wp-content/uploads/2026/02/APC-BACK-UPS-1200VA-230V-AVR-IEC-SOCKETS.webp", tag: "Keep connected", desc: "Short-duration backup power for essential networking equipment." },
+      { id: 14, name: "Surge Protection & Grounding Kit", category: "power", categoryName: "Protection", price: 3000, image: "https://viox.com/wp-content/uploads/2025/12/grounding-vs-gfci-vs-surge-protection-cover.webp", tag: "Protection", desc: "Protection accessories for a properly designed installation." },
+      { id: 15, name: "Outdoor Enclosure & Mounting Kit", category: "power", categoryName: "Installation", price: 2800, image: "https://ke.jumia.is/OqbqeRF00wzzlDkfwLJYxw8Sx-Y=/fit-in/500x500/filters:fill(white)/product/67/9067823/1.jpg?7160", tag: "Installation", desc: "Mounting and enclosure accessories for suitable equipment." },
+      { id: 16, name: "Fibre ONT / Modem", category: "routers", categoryName: "Internet equipment", price: 4500, image: "https://shieldnettechnologies.co.ke/images/images/xpon_huawei_1_0GFr3Vg_rRu9U67.jpg", tag: "ISP dependent", desc: "Internet termination equipment; compatibility depends on your ISP." },
+      { id: 17, name: "MikroTik RB951", category: "routers", categoryName: "Router", price: 6500, image: "https://cdn.mikrotik.com/web-assets/rb_images/903_xl.webp", tag: "Hotspot essential", desc: "Good for onboarding with billing systems for managing a small hotspot network." },
+      { id: 18, name: "Arduino UNO Starter Kit", category: "electronics", categoryName: "Electronics", price: 3500, image: "https://askelectronics.co.ke/wp-content/uploads/2019/01/2345-69cfa6.jpeg", tag: "Electronics starter", desc: "A starter kit for electronics projects and prototyping." },
+      { id: 19, name: "Raspberry Pi 4 Model B", category: "electronics", categoryName: "Electronics", price: 7500, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlG6XWFLM4zUDqkCihlKAwoi8Xu7UCKTiPy70yRFRMlw&s", tag: "Single-board computer", desc: "A versatile single-board computer for various applications." },
+      { id: 20, name: "ESP32 Development Board", category: "electronics", categoryName: "Electronics", price: 2500, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY_ywtainqfCeVdvJdwwa1wgRieR5OOShYMEcj7dOQCg&s", tag: "IoT development", desc: "A development board for IoT projects and wireless applications." }
+    ];
+
+    const cart = new Map();
+    let activeCategory = "all";
+    const money = amount => "KSh " + amount.toLocaleString("en-KE");
+    const productGrid = document.getElementById("productGrid");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+
+    function visibleProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      let list = products.filter(p =>
+        (activeCategory === "all" || p.category === activeCategory) &&
+        [p.name, p.desc, p.categoryName, p.tag].join(" ").toLowerCase().includes(query)
+      );
+      if (sortSelect.value === "low") list.sort((a,b) => a.price - b.price);
+      if (sortSelect.value === "high") list.sort((a,b) => b.price - a.price);
+      if (sortSelect.value === "az") list.sort((a,b) => a.name.localeCompare(b.name));
+      return list;
+    }
+
+    function renderProducts() {
+      const list = visibleProducts();
+      document.getElementById("resultCount").textContent = `${list.length} product${list.length === 1 ? "" : "s"}`;
+      if (!list.length) {
+        productGrid.innerHTML = '<div class="empty-state"><strong>No products found.</strong><br>Try another search or category.</div>';
+        return;
+      }
+      productGrid.innerHTML = list.map(p => `
+        <article class="product-card">
+          <div class="product-image"><span class="tag">${p.tag}</span><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=85';"></div>
+          <div class="product-info">
+            <div class="category-label">${p.categoryName}</div>
+            <h3>${p.name}</h3>
+            <p class="product-desc">${p.desc}</p>
+            <div class="product-bottom"><span class="price">${money(p.price)}</span><button class="add-btn" data-add="${p.id}">+ Add to cart</button></div>
+          </div>
+        </article>`).join("");
+    }
+
+    function addToCart(id) {
+      cart.set(id, (cart.get(id) || 0) + 1);
+      renderCart();
+      showToast("Added to your order");
+    }
+
+    function changeQty(id, delta) {
+      const next = (cart.get(id) || 0) + delta;
+      if (next <= 0) cart.delete(id); else cart.set(id, next);
+      renderCart();
+    }
+
+    function renderCart() {
+      let units = 0, total = 0;
+      cart.forEach((qty, id) => {
+        const p = products.find(x => x.id === id);
+        units += qty; total += p.price * qty;
+      });
+      document.getElementById("cartCount").textContent = units;
+      document.getElementById("cartTitleCount").textContent = `(${units})`;
+      document.getElementById("cartTotal").textContent = money(total);
+      document.getElementById("checkoutBtn").disabled = units === 0;
+      const cartItems = document.getElementById("cartItems");
+      if (!units) {
+        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty.<br>Add some networking gear to get started.</div>';
+        return;
+      }
+      cartItems.innerHTML = [...cart.entries()].map(([id, qty]) => {
+        const p = products.find(x => x.id === id);
+        return `<div class="cart-line">
+          <img class="cart-product-image" src="${p.image}" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=200&q=75';">
+          <div><h4>${p.name}</h4><div class="line-price">${money(p.price)} each</div>
+            <div class="qty"><button data-qty="${id}" data-delta="-1" aria-label="Decrease quantity">−</button><strong>${qty}</strong><button data-qty="${id}" data-delta="1" aria-label="Increase quantity">+</button></div>
+          </div>
+          <div><strong>${money(p.price * qty)}</strong><br><button class="remove-item" data-remove="${id}">Remove</button></div>
+        </div>`;
+      }).join("");
+    }
+
+    function openCart() {
+      document.getElementById("cartOverlay").classList.add("open");
+      document.getElementById("cartDrawer").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+    function closeCart() {
+      document.getElementById("cartOverlay").classList.remove("open");
+      document.getElementById("cartDrawer").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1900);
+    }
+    function whatsappReady() {
+      if (!/^\d{10,15}$/.test(WHATSAPP_NUMBER) || WHATSAPP_NUMBER.includes("X")) {
+        alert("Please set your WhatsApp number in the code first. Find WHATSAPP_NUMBER near the top of the JavaScript and enter your country code and number, digits only.");
+        return false;
+      }
+      return true;
+    }
+    function sendWhatsApp(message) {
+      if (!whatsappReady()) return;
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+    function checkout() {
+      if (!cart.size) return;
+      const lines = [...cart.entries()].map(([id, qty]) => {
+        const p = products.find(x => x.id === id);
+        return `• ${p.name} x${qty} — ${money(p.price * qty)}`;
+      });
+      let total = 0;
+      cart.forEach((qty,id) => total += products.find(p => p.id === id).price * qty);
+      const message = `Hello MIGSTAR N-NET, I would like to order the following hotspot/networking equipment:\n\n${lines.join("\n")}\n\nEstimated subtotal: ${money(total)}\n\nPlease confirm current availability, final prices, delivery/pickup options, and payment instructions.\n\nMy name:`;
+      sendWhatsApp(message);
+    }
+
+    productGrid.addEventListener("click", e => {
+      const button = e.target.closest("[data-add]");
+      if (button) addToCart(Number(button.dataset.add));
+    });
+    document.getElementById("filters").addEventListener("click", e => {
+      const button = e.target.closest("[data-category]");
+      if (!button) return;
+      activeCategory = button.dataset.category;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b === button));
+      renderProducts();
+    });
+    searchInput.addEventListener("input", renderProducts);
+    sortSelect.addEventListener("change", renderProducts);
+    document.getElementById("openCart").addEventListener("click", openCart);
+    document.getElementById("closeCart").addEventListener("click", closeCart);
+    document.getElementById("cartOverlay").addEventListener("click", closeCart);
+    document.getElementById("cartItems").addEventListener("click", e => {
+      const qtyButton = e.target.closest("[data-qty]");
+      const removeButton = e.target.closest("[data-remove]");
+      if (qtyButton) changeQty(Number(qtyButton.dataset.qty), Number(qtyButton.dataset.delta));
+      if (removeButton) { cart.delete(Number(removeButton.dataset.remove)); renderCart(); }
+    });
+    document.getElementById("checkoutBtn").addEventListener("click", checkout);
+    document.getElementById("askWhatsApp").addEventListener("click", () =>
+      sendWhatsApp("Hello MIGSTAR N-NET, I need advice on choosing hardware for a Wi-Fi hotspot. Please help me select suitable equipment.")
+    );
+    document.getElementById("consultWhatsApp").addEventListener("click", () =>
+      sendWhatsApp("Hello MIGSTAR N-NET, I am planning a hotspot installation. Please help me choose equipment.\n\nLocation:\nExpected simultaneous users:\nCoverage area:\nInternet connection available:\nBudget:")
+    );
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
